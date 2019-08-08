@@ -4,7 +4,7 @@
 A script that looks up the Wikipedia page of a famous person 
 and returns their birthday...
 
-![Screenshot of celebrity birthday lookup](screenshot.png)
+![Screenshot of celebrity birthday lookup](screenshot.PNG)
 
 This program is in early development and only works with exact name 
 matches (although Wikipedia's redirect algorithm tends to be 

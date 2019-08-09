@@ -18,8 +18,11 @@ def birthday(res):
     except AttributeError:
         return None
 
-print('Enter the name of a celebrity to look up their birthday.')
-print('Type CTRL+D to quit.')
+print(
+    '''
+    Enter the name of a famous person with a Wikipedia page 
+    to look up their birthday.  Type CTRL+D to quit.
+    ''')
 
 while True:
     name = input('> ')

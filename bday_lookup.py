@@ -18,6 +18,13 @@ def normCaps(name):
     newname = ' '.join(y)
     return newname
 
+#check if the URL is a disambiguation page
+def disambig(bs):
+    if bs.find("table", id="disambigbox") == None:
+        return False
+    else:
+        return True
+
 #look up name as stored in first heading of page and birthday
 #return none if no birthday available
 def birthday(res):
@@ -28,12 +35,12 @@ def birthday(res):
         ndate = datetime.strptime(date, '%Y-%m-%d')
         return name,ndate.strftime("%B %d, %Y")
     except:
-        return None
+        return None,None
 
 print(
     '''
-    Enter the name of a famous person with a Wikipedia page 
-    to look up their birthday.  Type Q to quit.
+Enter the name of a famous person with a Wikipedia page to look up 
+their birthday. Type Q to quit.
     ''')
 
 while True:
@@ -44,10 +51,17 @@ while True:
     res = requests.get(url)
     
     if res.status_code == 200:
-        wikiname,bday = birthday(res)
-        if bday != None:
-            print(wikiname, "was born on", bday + ".")
+        bs = BeautifulSoup(res.text, 'lxml')
+        if disambig(bs):
+            print('''
+Can't find a page for that person. You might want to try a more specific name 
+or include a descriptor in parentheses (ex. "George W. Bush", "Madonna (entertainer)")
+                  ''')
         else:
-            print("There doesn't seem to be a birthday associated with this person.")
+            wikiname,bday = birthday(res)
+            if bday != None:
+                print(wikiname, "was born on", bday + ".")
+            else:
+                print("There doesn't seem to be a birthday associated with that name.")
     else:
-        print("Sorry, there is no record for that person or the page is currently unavailable.")
+        print("Sorry, there is no record for that person or the page doesn't exist.")
